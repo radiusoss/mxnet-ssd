@@ -3,6 +3,8 @@ import tools.find_mxnet
 import mxnet as mx
 import os
 import sys
+
+import params
 from detect.detector import Detector
 from symbol.symbol_factory import get_symbol
 
@@ -40,7 +42,7 @@ def get_detector(net, prefix, epoch, data_shape, mean_pixels, ctx, num_class,
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Single-shot detection network demo')
-    parser.add_argument('--network', dest='network', type=str, default='resnet50',
+    parser.add_argument('--network', dest='network', type=str, default=params.default_network,
                         help='which network to use')
     parser.add_argument('--images', dest='images', type=str, default='./data/demo/dog.jpg',
                         help='run demo with images, use comma to seperate multiple images')
@@ -51,13 +53,13 @@ def parse_args():
     parser.add_argument('--epoch', dest='epoch', help='epoch of trained model',
                         default=0, type=int)
     parser.add_argument('--prefix', dest='prefix', help='trained model prefix',
-                        default=os.path.join(os.getcwd(), 'model', 'ssd_'),
+                        default=os.path.join(params.default_model_dir, 'ssd_'),
                         type=str)
     parser.add_argument('--cpu', dest='cpu', help='(override GPU) use CPU to detect',
                         action='store_true', default=False)
     parser.add_argument('--gpu', dest='gpu_id', type=int, default=0,
                         help='GPU device id to detect with')
-    parser.add_argument('--data-shape', dest='data_shape', type=int, default=512,
+    parser.add_argument('--data-shape', dest='data_shape', type=int, default=params.default_data_shape,
                         help='set image shape')
     parser.add_argument('--mean-r', dest='mean_r', type=float, default=123,
                         help='red mean value')
@@ -76,9 +78,7 @@ def parse_args():
     parser.add_argument('--deploy', dest='deploy_net', action='store_true', default=False,
                         help='Load network from json file, rather than from symbol')
     parser.add_argument('--class-names', dest='class_names', type=str,
-                        default='aeroplane, bicycle, bird, boat, bottle, bus, \
-                        car, cat, chair, cow, diningtable, dog, horse, motorbike, \
-                        person, pottedplant, sheep, sofa, train, tvmonitor',
+                        default=params.default_class_names,
                         help='string of comma separated names, or text filename')
     args = parser.parse_args()
     return args

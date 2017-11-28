@@ -1,5 +1,7 @@
 from __future__ import print_function
 import argparse
+
+import params
 import tools.find_mxnet
 import mxnet as mx
 import os
@@ -9,16 +11,16 @@ from symbol.symbol_factory import get_symbol
 
 def parse_args():
     parser = argparse.ArgumentParser(description='Convert a trained model to deploy model')
-    parser.add_argument('--network', dest='network', type=str, default='vgg16_reduced',
+    parser.add_argument('--network', dest='network', type=str, default=params.default_network,
                         help='which network to use')
     parser.add_argument('--epoch', dest='epoch', help='epoch of trained model',
                         default=0, type=int)
     parser.add_argument('--prefix', dest='prefix', help='trained model prefix',
-                        default=os.path.join(os.getcwd(), 'model', 'ssd_'), type=str)
-    parser.add_argument('--data-shape', dest='data_shape', type=int, default=300,
+                        default=os.path.join(params.default_model_dir, 'ssd_'), type=str)
+    parser.add_argument('--data-shape', dest='data_shape', type=int, default=params.default_data_shape,
                         help='data shape')
     parser.add_argument('--num-class', dest='num_classes', help='number of classes',
-                        default=20, type=int)
+                        default=params.default_num_class, type=int)
     parser.add_argument('--nms', dest='nms_thresh', type=float, default=0.5,
                         help='non-maximum suppression threshold, default 0.5')
     parser.add_argument('--force', dest='force_nms', type=bool, default=True,

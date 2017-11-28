@@ -1,0 +1,2 @@
+# in a conda env with numpy, matplotlib, and mxnet etc
+opencv-python=3.3.0.10
